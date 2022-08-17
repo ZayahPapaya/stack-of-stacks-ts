@@ -7,7 +7,7 @@
     "check": "tsc",
     "test": "jest"
   },
-  "author": "",
+  "author": "Zayah",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.18.9",

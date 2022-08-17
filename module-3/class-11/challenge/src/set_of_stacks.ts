@@ -4,30 +4,66 @@ export class SetOfStacks<T> {
   //
   //    let stack = new Stack<T>(this.maxHeight);
   //
-  constructor(private readonly maxHeight: number) {}
+  stacks: Stack<T>[] = [];
+  head: Stack<T> | undefined;
+  constructor(private readonly maxHeight: number) { }
 
   push(t: T): void {
-    throw new Error("TODO(you)");
+    //throw new Error("TODO(you)");
+    if (!this.head || this.head._arr.length >= this.maxHeight) {
+      let stack = new Stack<T>(this.maxHeight);
+      this.head = stack;
+      this.stacks.push(stack);
+      stack.push(t);
+    } else {
+      this.head.push(t);
+    }
   }
 
   pop(): T {
-    throw new Error("TODO(you)");
+    console.log('HEAD',this.head);
+    let popped;
+    if (!this.head) { throw new Error('No stacks left') };
+    if(this.head._arr.length > 0){
+      popped = this.head._arr.pop();
+    }
+    if (this.head._arr.length === 0) {
+      this.stacks.pop();
+      this.head = this.stacks[this.stacks.length-1];
+    };
+    if (popped === undefined) {
+      throw new Error('Item not found');
+    }
+    return popped;
   }
 
   get peek(): T {
-    throw new Error("TODO(you)");
+    let peeked: any;
+    if(this.head?._arr.length === 0 || !this.head){
+      throw new Error('No stacks left');
+    }
+    peeked = this.head._arr[this.head._arr.length-1];
+    if(peeked){
+      return peeked;
+    } else {
+      throw new Error('No peek')
+    };
   }
 
   // BONUS QUESTION
   get size(): number {
-    throw new Error("TODO(you)");
+    let count: number = 0;
+    for (let i = 0; i < this.stacks.length; i++) {
+      count = count + this.stacks[i]._arr.length;
+    };
+    return count;
   }
 }
 
 class Stack<T> {
   readonly _arr: T[] = [];
 
-  constructor(private readonly maxHeight: number) {}
+  constructor(private readonly maxHeight: number) { }
 
   push(t: T) {
     if (this._arr.length > this.maxHeight) {
